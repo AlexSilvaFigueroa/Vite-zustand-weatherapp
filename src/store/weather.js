@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { weatherResponse } from "../mocks/weather-api";
+import { getWeatherByCurrentLocation } from "../services";
 
 export const useWeatherStore = create((set) => {
   return {
@@ -7,12 +8,7 @@ export const useWeatherStore = create((set) => {
     weatherResponse,
 
     fetchWeather: async (coords) => {
-      const res = await fetch(
-        `https://api.weatherapi.com/v1/current.json?q=${coords.latitude}%20${coords.longitude}&key=${
-          import.meta.env.VITE_WEATHER_API_KEY
-        }`
-      );
-      const weatherResponse = await res.json();
+      const weatherResponse = await getWeatherByCurrentLocation({ coords });
 
       set({ weatherResponse });
     },
